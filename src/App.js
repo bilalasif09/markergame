@@ -1,28 +1,59 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
+class Board extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      boxes: Array(64).fill(null),
+      player: 'red'
+    };
+  };
+  handleClick(boxNumber) {
+    console.log("Click", boxNumber);
+    const boxes = this.state.boxes.slice();
+    boxes[boxNumber] = this.state.player;
+    this.state.player === 'red' ? this.setState({player: 'green'}) : this.setState({player: 'red'});
+    // this.setState({player: !this.state.player});
+    this.setState({boxes: boxes}); 
+  };
+  renderSquares(boxNumber) {
+    return(<Box key={boxNumber} value={this.state.boxes[boxNumber]} onClick={() => this.handleClick(boxNumber)} />);  
+  };
+  renderBoard() {
+    let board = [];
+    for (let i = 0; i < 64; i++) {
+      if (i % 8 === 0) {
+        board.push(<br></br>);
+      };
+      board.push(this.renderSquares(i));
+    };
+    return board;
+  };
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="container">
+        <p> Next move {this.state.player} </p>
+        {this.renderBoard()}
       </div>
     );
-  }
-}
+  };
+};
 
-export default App;
+class Box extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null
+    };
+  };
+  render() {
+    return (
+      <button className={[this.props.value, "box"].join(' ')} onClick={() => this.props.onClick()}>
+        {this.props.value}
+      </button>
+    );
+  }
+};
+
+export default Board;

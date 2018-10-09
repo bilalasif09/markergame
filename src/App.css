@@ -30,3 +30,20 @@
     transform: rotate(360deg);
   }
 }
+.box {
+  height: 60px;
+  width: 60px;
+  display: inline-block;
+  vertical-align: top;
+}
+.container {
+  width: 100%;
+  text-align: center;
+  margin-top: 200px;
+}
+.red {
+  background-color: red;
+}
+.green {
+  background-color: green;
+}
