@@ -31,19 +31,28 @@
   }
 }
 .box {
-  height: 60px;
-  width: 60px;
+  height: 30px;
+  width: 30px;
   display: inline-block;
   vertical-align: top;
+  color: #fff;
+  text-transform: capitalize;
+  font-weight: bold;
 }
 .container {
   width: 100%;
+  min-height: 1000px;
   text-align: center;
   margin-top: 200px;
 }
 .red {
-  background-color: red;
+  background-color: red!important;
 }
 .green {
-  background-color: green;
+  background-color: green!important;
+}
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
 }
