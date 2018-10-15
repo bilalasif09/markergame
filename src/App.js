@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import {connect} from './api';
 
 class Board extends Component {
   constructor(props) {
@@ -11,6 +12,9 @@ class Board extends Component {
       currentPlayerPosition: 3,
       otherPlayerPosition: 60
     };
+    connect(message => {
+      console.log("message on client", message);
+    });
   };
   componentWillMount() {
     this.setButtonStates();
