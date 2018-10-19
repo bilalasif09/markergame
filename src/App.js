@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {connect} from './api';
+import { stateChange } from './api';
 
 class Board extends Component {
   constructor(props) {
@@ -12,12 +12,21 @@ class Board extends Component {
       currentPlayerPosition: 3,
       otherPlayerPosition: 60
     };
-    connect(message => {
-      console.log("message on client", message);
-    });
   };
   componentWillMount() {
-    this.setButtonStates();
+    this.setButtonStates('initial');
+    // connect(state => {
+    //   console.log("state callback on client--> state", state);
+    //   if (state && state.boxes && state.currentPlayer !== this.state.currentPlayer) {
+    //     console.log("Setting state...");
+    //     const boxes = state.boxes.slice();
+    //     this.setState({boxes: boxes});
+    //     this.setState({currentPlayer: state.currentPlayer});
+    //     this.setState({otherPlayer: state.otherPlayer});
+    //     this.setState({currentPlayerPosition: state.currentPlayerPosition});
+    //     this.setState({otherPlayerPosition: state.otherPlayerPosition});
+    //   };
+    // });
   };
   getPlayerMoves() {
     const currentPosition = this.state.currentPlayerPosition;
@@ -32,7 +41,7 @@ class Board extends Component {
     };
     return moves.filter(move => move>=0 && move<=63);
   };
-  setButtonStates() {
+  setButtonStates(callType) {
     let boxes = this.state.boxes.slice();
     boxes[this.state.currentPlayerPosition] = { value: this.state.currentPlayer, disabledState: true };
     boxes[this.state.otherPlayerPosition] = { value: this.state.otherPlayer, disabledState: true };
@@ -46,7 +55,22 @@ class Board extends Component {
       };
     };
     console.log("Boxes after", boxes);
-    this.setState({boxes: boxes});
+    this.setState({boxes: boxes}, () => {
+      if (callType !== 'initial') {
+        stateChange(this.state, updatedState => {
+          console.log("state callback on client--> state", updatedState);
+          if (updatedState && updatedState.boxes && updatedState.currentPlayer !== this.state.currentPlayer) {
+            console.log("Setting state...");
+            const boxes = updatedState.boxes.slice();
+            this.setState({boxes: boxes});
+            this.setState({currentPlayer: updatedState.currentPlayer});
+            this.setState({otherPlayer: updatedState.otherPlayer});
+            this.setState({currentPlayerPosition: updatedState.currentPlayerPosition});
+            this.setState({otherPlayerPosition: updatedState.otherPlayerPosition});
+          };
+        });
+      };
+    });
   };
   handleClick(boxNumber) {
     let boxes = this.state.boxes.slice();
@@ -77,7 +101,7 @@ class Board extends Component {
     Promise.all([promise1, promise2, promise3])
     .then( values => {
       console.log("Promise all", values, this.state);
-      this.setButtonStates();
+      this.setButtonStates('after');
     })
     .catch( err => {
       console.log("Error resolving promises", err);
