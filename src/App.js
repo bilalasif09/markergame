@@ -56,7 +56,7 @@ class Board extends Component {
     };
     console.log("Boxes after", boxes);
     this.setState({boxes: boxes}, () => {
-      if (callType !== 'initial') {
+      // if (callType !== 'initial') {
         stateChange(this.state, updatedState => {
           console.log("state callback on client--> state", updatedState);
           if (updatedState && updatedState.boxes && updatedState.currentPlayer !== this.state.currentPlayer) {
@@ -69,7 +69,7 @@ class Board extends Component {
             this.setState({otherPlayerPosition: updatedState.otherPlayerPosition});
           };
         });
-      };
+      // };
     });
   };
   handleClick(boxNumber) {
