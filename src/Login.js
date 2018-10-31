@@ -35,6 +35,11 @@ class Login extends Component {
     const password = this.state.signupPassword.trim();
     if (name && email && password) {
         event.preventDefault();
+        postData('http://localhost:5000/signup', {name: name, email: email, password: password})
+        .then(data => {
+            console.log(data);
+        }) // JSON-string from `response.json()` call
+        .catch(error => console.error(error));
     };
     console.log(this.state);
   };

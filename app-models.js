@@ -46,8 +46,14 @@ const Match = mongoose.model('matches', new Schema({
         type: mongoose.Types.ObjectId,
         ref: 'users'
     },
-    player_one_team: String,
-    player_two_team: String,
+    player_one_team: {
+		type: String,
+		default: 'red'
+	},
+    player_two_team: {
+		type: String,
+		default: 'green'
+	},
     is_live: Boolean,
     winner: String,
     created_at: {
@@ -56,4 +62,20 @@ const Match = mongoose.model('matches', new Schema({
     }
 }));
 
-module.exports = { User, Match };
+const ActiveUsers = mongoose.model('activeusers', new Schema({
+	user_id: {
+		type: mongoose.Types.ObjectId,
+		ref: 'users'
+	},
+	socket_id: String,
+	is_playing: {
+		type: Boolean,
+		default: false
+	},
+	created_at: {
+		type: Date,
+		default: new Date()
+	}
+}));
+
+module.exports = { User, Match, ActiveUsers };
